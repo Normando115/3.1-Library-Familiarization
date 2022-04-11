@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>p5.play Example</title>
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js" type="text/javascript"></script>
+    <script src="p5.play.js" type="text/javascript"></script>
+    <script src="ace.js"></script>
+    <script src="player.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+
+    <div id = "container">
+      <div id="myP5">
+      </div>
+
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="index.html?fileName=collisions5.js">Collisions - point and pixel overlap</a></li>
+
+
+
+
+
+  </div>
+
+
+
+    <pre id="editor">
+      //file not found
+    </pre>
+    </div>
+
+    <script>
+
+
+
+    //load a script
+    $(document).ready( function () {
+
+      var searchString = window.location.search.substring(1);
+      var variableArray = searchString.split('&');
+      fileName = getUrlValue("fileName");
+
+      if(fileName==undefined)
+        fileName = "animation.js";
+
+      $.ajax({
+        type: "GET",
+        url: fileName,
+        dataType: "text",
+        async: true,
+        success: loadLibraries,
+        error: loadLibrariesDefault
+      });
+
+      });//doc ready
+
+      function getUrlValue(varSearch) {
+        var searchString = window.location.search.substring(1);
+        var variableArray = searchString.split('&');
+
+        for(var i = 0; i < variableArray.length; i++){
+          var keyValuePair = variableArray[i].split('=');
+          console.log(keyValuePair);
+          if(keyValuePair[0] == varSearch){
+            return keyValuePair[1];
+          }
+        }
+      }
+
+
+      function loadLibrariesDefault() {
+      editor.setValue("//file not found");
+      }
+
+      function loadLibraries(data) {
+        originalCode = data;
+        startMain();
+        console.log("example loaded");
+        editor.setValue(data, -1);
+
+        $.ajax({
+          type: "GET",
+          url: "p5.play.js",
+          dataType: "text",
+          async: true,
+          success: playEditor
+        });
+
+      }
+
+      function reset() {
+        editor.setValue(originalCode, -1);
+        playEditor();
+      }
+
+      function run() {
+        playEditor();
+      }
+
+    </script>
+
+  </body>
+</html>
